@@ -1,0 +1,139 @@
+﻿@model RepoApp.BLL.Models.EditModels.UserEditModel
+
+@{
+    Layout = null;
+}
+
+<style>
+    .col-form-label {
+        font-weight: bold;
+    }
+
+    .editContainer {
+        text-align: right;
+    }
+
+    .switch {
+        text-align: left;
+    }
+</style>
+
+
+<form novalidate id="userEditPost">
+    <div class="container editContainer">
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="row">
+            <div class="col-sm-3">
+                <label asp-for="UserName" class="col-form-label"></label>
+            </div>
+            <div class="col-sm-9">
+
+                <input asp-for="UserName" class="form-control userName" />
+                <span asp-validation-for="UserName" class="error"></span>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-3">
+                <label asp-for="FullName" class="col-form-label"></label>
+            </div>
+            <div class="col-sm-9">
+
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="error"></span>
+            </div>
+        </div>
+        <br />
+
+        <div class="row">
+            <div class="col-sm-3">
+                <label asp-for="Email" class="col-form-label"></label>
+            </div>
+            <div class="col-sm-9">
+
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="error"></span>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-sm-3">
+                <label asp-for="ChangeConnection" class="col-form-label"></label>
+            </div>
+            <div class="col-sm-3 switch">
+                <input asp-for="ChangeConnection" type="checkbox" name="my-checkbox1"/>
+
+            </div>
+        </div>
+        <br />
+
+
+        <div class="row">
+            <div class="col-sm-3">
+                <label asp-for="IsChangePassword" class="col-form-label"></label>
+            </div>
+            <div class="col-sm-3 switch">
+                <input asp-for="IsChangePassword" type="checkbox" name="my-checkbox2"/>
+            </div>
+        </div>
+        <br />
+
+        <div class="newpassword">
+            <div class="row">
+                <div class="col-sm-3">
+                    <label asp-for="Password" class="col-form-label"></label>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="error"></span>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-3">
+                    <label asp-for="ConfirmPassword" class="col-form-label"></label>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="error"></span>
+                </div>
+            </div>
+            <br />
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <label asp-for="IsChangeRoles" class="col-form-label"></label>
+            </div>
+            <div class="col-sm-3 switch">
+                <input asp-for="IsChangeRoles" type="checkbox" name="my-checkbox3"/>
+            </div>
+
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-3 changeRoles">
+                <label asp-for="Roles" class="col-form-label"></label>
+            </div>
+            <div class="col-sm-9 changeRoles">
+                <select asp-for="Roles" asp-items="ViewBag.Roles"
+                        asp-data-style="btn-select"
+                        asp-data-size="10"
+                        asp-data-max-options="3"
+                        class="form-control form-control-sm selectpicker selectpicker-border show-tick">
+                </select>
+
+                <span asp-validation-for="IsChangeRoles"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="submit">Edit</button>
+    </div>
+</form>
+

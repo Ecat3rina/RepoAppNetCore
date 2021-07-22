@@ -1,0 +1,12 @@
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.Common\bin\Debug\net5.0\RepoApp.Common.deps.json
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.Common\bin\Debug\net5.0\RepoApp.Common.dll
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.Common\bin\Debug\net5.0\ref\RepoApp.Common.dll
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.Common\bin\Debug\net5.0\RepoApp.Common.pdb
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.Common\obj\Debug\net5.0\RepoApp.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.Common\obj\Debug\net5.0\RepoApp.Common.AssemblyInfoInputs.cache
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.Common\obj\Debug\net5.0\RepoApp.Common.AssemblyInfo.cs
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.Common\obj\Debug\net5.0\RepoApp.Common.csproj.CoreCompileInputs.cache
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.Common\obj\Debug\net5.0\RepoApp.Common.dll
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.Common\obj\Debug\net5.0\ref\RepoApp.Common.dll
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.Common\obj\Debug\net5.0\RepoApp.Common.pdb
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.Common\obj\Debug\net5.0\RepoApp.Common.csproj.AssemblyReference.cache

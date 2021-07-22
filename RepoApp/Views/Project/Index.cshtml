@@ -1,0 +1,414 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    .dataTables_filter, .dt-buttons {
+        display: inline-block;
+    }
+
+    .col-sm-9 {
+        text-align: right;
+    }
+</style>
+<h2>Projects</h2>
+
+<div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title"></h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="body">
+                <!-- Modal body -->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*$('button:contains("Search")').css({ 'display': 'none' })*@
+
+<table id="table" class="table table-bordered table-striped">
+</table>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var logout = $("a[href$='Account/LogOut']").text();
+            var loggedUsername = logout.replace('Exit ', '');
+            var table;
+
+            $.ajax(
+                {
+                    type: "Get",
+                    url: "/Project/GetRole",
+                    dataType: 'JSON',
+                    data: {
+                        name: loggedUsername,
+                    },
+                    success: function (response) {
+                        if (response === "\"Admin\"") {
+
+                table=$("#table").DataTable({
+                    autoWidth: false,
+                    serverSide: true,
+
+                    dom:
+                        "<'row'<'col-sm-3'l><'col-sm-9'Bf>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                    buttons: [
+                        {
+                            text: 'Add',
+                            action: function (e, dt, node, config) {
+                                window.location.href = "https://localhost:44379/Project/Add";
+                            }
+                        }
+                    ],
+                    language: { search: "" },
+                    "columns": [
+                        {
+                            data: 'id',
+                            name: 'id',
+                            visible: false
+                        },
+                        {
+
+                            data: 'name',
+                            name: 'name',
+                            title: 'Project name',
+                            "autoWidth": true
+                        },
+                        {
+                            data: 'department',
+                            name: 'department',
+                            title: 'Department',
+                            "autoWidth": true
+
+                        },
+                        {
+                            data: 'user',
+                            name: 'user',
+                            title: 'Cedacri International responsible user',
+                            "autoWidth": true
+                        },
+                        {
+                            data: 'username',
+                            name: 'username',
+                            title: 'Cedacri Italia responsible user name',
+                        },
+
+                        {
+                            data: null,
+                            orderable: false,
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                var link = "https://localhost:44379/Project/GetEdit/" + row.id;
+                                return "<a href='"+link+ "' class='btn btn-warning projectEdit' title='Edit'><i class='fas fa-edit'></i></a>";
+                            }
+                        },
+                        {
+                            data: null,
+                            orderable: false,
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                var link = "https://localhost:44379/Project/GetDetails/" + row.id;
+                                return "<a href='" +link+ "' class='btn btn-info projectInfo' title='Details'><i class='fas fa-info-circle'></i></a>";
+
+                            }
+                        },
+                        @*{
+                            data: null,
+                            orderable: false,
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                return "<a href='@Url.Action("Delete","Project")/" + row.Id + "'class='btn btn-danger projectDelete' title='Delete'><span class='glyphicon glyphicon-remove'></span></a>";
+                            }
+                        }*@
+                    ],
+                     ajax: {
+                         url: "/Project/GetProjects",
+                        type: "Post",
+                        datatype: "json"
+
+                    },
+
+
+
+
+                    ////initComplete: function () {
+                    ////    var input = $(".dataTables_filter input").unbind();
+                    ////    var inputVar = $(".dataTables_filter input");
+                    ////    $("#myTable_filter").append(inputVar);
+                    ////    $("#myTable_filter label").remove();
+                    ////    self = this.api(),
+                    ////        $searchButton = $("<button class='btn btn-sm btn-default'>")
+                    ////            .text("Search")
+                    ////            .click(function () {
+                    ////                self.search(input.val()).draw();
+                    ////            })
+                    ////    $(".dataTables_filter").append($searchButton);
+                   // },
+
+                })
+
+            }
+
+                        if (response == "\"Operator\"") {
+
+                            table = $("#table").DataTable({
+                    autoWidth: false,
+                    serverSide: true,
+
+
+                    language: { search: "" },
+
+
+                    "columns": [
+                        {
+                            data: 'id',
+                            name: 'id',
+                            visible: false
+                        },
+                        {
+
+                            data: 'ame',
+                            name: 'name',
+                            title: 'Project name',
+                            "autoWidth": true
+                        },
+                        {
+                            data: 'department',
+                            name: 'department',
+                            title: 'Department',
+                            "autoWidth": true
+
+                        },
+                        {
+                            data: 'user',
+                            name: 'user',
+                            title: 'Cedacri International responsible user',
+                            "autoWidth": true
+                        },
+                        {
+                            data: 'username',
+                            name: 'username',
+                            title: 'Cedacri Italia responsible user name',
+                        },
+
+                        {
+                            data: null,
+                            orderable: false,
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                var link = "https://localhost:44379/Project/GetEdit/" + row.id;
+                                return "<a href='" + link + "' class='btn btn-warning projectEdit' title='Edit'><i class='fas fa-edit'></i></a>";
+                            }
+                        },
+                        {
+                            data: null,
+                            orderable: false,
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                var link = "https://localhost:44379/Project/GetDetails/" + row.id;
+                                return "<a href='" + link + "' class='btn btn-info projectInfo' title='Details'><i class='fas fa-info-circle'></i></a>";
+
+                            }
+                        },
+
+                    ],
+
+
+                    ajax: {
+                        //url: "@Url.Action("GetProjects", "Project", new { httproute = "ActionRoute" })",
+                        url: "/Project/GetProjects",
+                        type: "Post"
+                    },
+
+
+
+                    //initComplete: function () {
+                    //    var input = $(".dataTables_filter input").unbind();
+                    //    var inputVar = $(".dataTables_filter input");
+                    //    $("#myTable_filter").append(inputVar);
+                    //    $("#myTable_filter label").remove();
+                    //    self = this.api(),
+                    //        $searchButton = $("<button class='btn btn-sm btn-default'>")
+                    //            .text("Search")
+                    //            .click(function () {
+                    //                self.search(input.val()).draw();
+                    //            })
+                    //    $(".dataTables_filter").append($searchButton);
+                    //},
+                })
+            }
+
+
+                        if (response == "\"User\"") {
+
+                table = $("#table").DataTable({
+                    autoWidth: false,
+                    serverSide: true,
+
+
+                    language: { search: "" },
+
+
+                    "columns": [
+                        {
+                            data: 'id',
+                            name: 'id',
+                            visible: false
+                        },
+                        {
+
+                            data: 'name',
+                            name: 'name',
+                            title: 'Project name',
+                            "autoWidth": true
+                        },
+                        {
+                            data: 'department',
+                            name: 'department',
+                            title: 'Department',
+                            "autoWidth": true
+
+                        },
+                        {
+                            data: 'user',
+                            name: 'user',
+                            title: 'Cedacri International responsible user',
+                            "autoWidth": true
+                        },
+                        {
+                            data: 'username',
+                            name: 'username',
+                            title: 'Cedacri Italia responsible user name',
+                        },
+
+
+                        {
+                            data: null,
+                            orderable: false,
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                var link = "https://localhost:44379/Project/GetDetails/" + row.id;
+                                return "<a href='" + link + "' class='btn btn-info projectInfo' title='Details'><i class='fas fa-info-circle'></i></a>";
+
+                            }
+                        },
+
+                    ],
+
+
+                    ajax: {
+                       // url: "@Url.Action("GetProjects", "Project", new { httproute = "ActionRoute" })",
+                        url: "/Project/GetProjects",
+                        type: "Post"
+                    },
+
+
+
+                    //initComplete: function () {
+                    //    var input = $(".dataTables_filter input").unbind();
+                    //    var inputVar = $(".dataTables_filter input");
+                    //    $("#myTable_filter").append(inputVar);
+                    //    $("#myTable_filter label").remove();
+                    //    self = this.api(),
+                    //        $searchButton = $("<button class='btn btn-sm btn-default'>")
+                    //            .text("Search")
+                    //            .click(function () {
+                    //                self.search(input.val()).draw();
+                    //            })
+                    //    $(".dataTables_filter").append($searchButton);
+                    //},
+                })
+            }
+
+                    }
+                })
+
+            $(document).on('click', '.projectInfo', function (event) {
+                event.preventDefault();
+
+                var myUrlInfo = this.pathname;
+
+                var id = myUrlInfo.substring(myUrlInfo.lastIndexOf('/') + 1);
+                var projectname;
+                table.rows(function (idx, data, node) {
+                    if (data.id === id) {
+                        projectname = data.name;
+                    }
+
+                    return false;
+                });
+
+                $.ajax(
+                    {
+                        async: true,
+                        url: myUrlInfo,
+                        success: function (data) {
+                            $(".body")[0].innerHTML = data;
+                            $("#modal-title").text(projectname+" details");
+                            $('#projectModal').modal();
+
+                        }
+                    })
+            });
+
+
+
+            $(document).on('click', '.projectDelete', function (event) {
+                event.preventDefault();
+
+                var myUrlInfo = this.pathname;
+
+                $.ajax(
+                    {
+                        async: true,
+                        url: myUrlInfo,
+                        success: function (data) {
+                            $(".body")[0].innerHTML = data;
+                            $("#modal-title").text("Delete project");
+                            $('#projectModal').modal();
+                        }
+                    })
+            });
+
+
+            $(document).on('submit', '#projectDeletePost', function (event) {
+                event.preventDefault();
+                $.ajax(
+                    {
+                        url: "/project/delete",
+                        data: {
+                            Id: $("#Id").val(),
+                        },
+                        method: "Post",
+                        success: function (response) {
+                            $("#projectModal").modal("hide");
+                            $('#table').DataTable().ajax.reload();
+                        }
+                    })
+            });
+
+            $(document).on('click', '.projectEdit', function (event) {
+                event.preventDefault();
+                var myUrlEdit = this.pathname;
+                $.ajax(
+                    {
+                        success: function (data) {
+                            window.location.href = myUrlEdit;
+
+                        }
+                    })
+                })
+            });
+
+    </script>
+}

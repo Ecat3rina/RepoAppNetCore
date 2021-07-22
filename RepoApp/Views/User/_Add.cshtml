@@ -1,0 +1,89 @@
+﻿@model RepoApp.BLL.Models.AddModels.UserAddModel
+
+@{
+    Layout = null;
+}
+
+<style>
+    .col-form-label {
+        font-weight: bold;
+    }
+
+    .addContainer {
+        text-align: right;
+    }
+</style>
+
+<form novalidate id="userAddPost">
+    <div class="container addContainer">
+
+        <div class="row">
+            <div class="col-sm-3">
+                <label asp-for="UserName" class="col-form-label"></label>
+            </div>
+            <div class="col-sm-9">
+
+                <input asp-for="UserName" class="form-control userName" />
+                <span asp-validation-for="UserName" class="error"></span>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-3">
+                <label asp-for="FullName" class="col-form-label"></label>
+            </div>
+            <div class="col-sm-9">
+
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="error"></span>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-3">
+                <label asp-for="Email" class="col-form-label"></label>
+            </div>
+            <div class="col-sm-9">
+
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="error"></span>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-3">
+                <label asp-for="Password" class="col-form-label"></label>
+            </div>
+            <div class="col-sm-9">
+
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="error"></span>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-3">
+                <label asp-for="Roles" class="col-form-label"></label>
+            </div>
+            <div class="col-sm-9">
+                <select asp-for="Roles" asp-items="ViewBag.Roles"
+                        asp-data-style="btn-select"
+                        asp-data-size="10"
+                        asp-data-max-options="3"
+                        class="form-control form-control-sm selectpicker selectpicker-border show-tick">
+                </select>
+                <span asp-validation-for="Roles" class="error"></span>
+            </div>
+        </div>
+
+        <br />
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" type="submit">Save</button>
+    </div>
+</form>
+
+
+
+
+

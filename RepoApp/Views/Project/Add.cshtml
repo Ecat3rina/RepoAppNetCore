@@ -1,0 +1,243 @@
+﻿@model RepoApp.BLL.Models.ProjectViewModelAdd
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewBag.Title = "Add";
+
+}
+
+
+
+<h2>Create project</h2>
+
+
+
+
+<form id="projectAddForm">
+
+
+    <hr />
+    <div class="row">
+        <div class="col-sm-6 form-group">
+            <label asp-for="Name" class="col-form-label"></label>
+            <input asp-for="Name" class="form-control projectName" />
+            <span asp-validation-for="Name" class="error_projectName"></span>
+        </div>
+        <div class="col-sm-6">
+            <label asp-for="DepartmentId" class="col-sm-6 col-form-label"></label>
+            <select asp-for="DepartmentId" asp-items="ViewBag.Departments"
+                    asp-data-style="btn-select"
+                    asp-data-size="10"
+                    asp-data-max-options="1"
+                    class="form-control form-control-sm selectpicker selectpicker-border show-tick departmentOption">
+            </select>
+            <span asp-validation-for="DepartmentId"></span>
+        </div>
+
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-6">
+            <label asp-for="UserId" class="col-form-label"></label>
+            <select asp-for="UserId" asp-items="ViewBag.Users"
+                    asp-data-style="btn-select"
+                    asp-data-size="10"
+                    asp-data-max-options="1"
+                    class="form-control form-control-sm selectpicker selectpicker-border show-tick user">
+            </select>
+            <span asp-validation-for="UserId"></span>
+        </div>
+
+        <div class="col-sm-6 form-group">
+            <label asp-for="Username" class="col-form-label"></label>
+            <input asp-for="Username" class="form-control userName" />
+            <span asp-validation-for="Username" class="error"></span>
+        </div>
+    </div>
+    <hr />
+</form>
+<div class="repoSpace"></div>
+
+<div class="row">
+    <div class="col text-center error_Row">
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col text-center">
+        <button class="btn btn-success center" type="button" id="addRepo"><span class="glyphicon glyphicon-plus"></span>Add repository</button>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col text-center">
+        <button class="btn btn-primary center" type="button" id="createProject">Create</button>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+
+        $(document).ready(function () {
+            var repoCount = -1;
+            
+
+            $("#addRepo").click(function () {
+                $('.error_Row').empty();
+                $('.error_projectName').empty();
+                repoCount++;
+                
+                $.ajax(
+                    {
+                        url: "/Project/AddRepository",
+                        type: "POST",
+                        success: function (response) {
+                            $(".repoSpace").append(response);
+                            $('.selectpicker').selectpicker();
+                            $('.url').last().attr('name', 'name' + repoCount);
+                            $('.spanClass').last().attr('id', 'id' + repoCount);
+                        },
+
+                    })
+
+
+
+            })
+
+            $("#createProject").click(function (e) {
+
+                var formDataRepository = new FormData();
+                var selectedIds = [];
+                var insertedUrls = [];
+
+                $(".repository-selectpicker option:selected").each(function (index) {
+                    selectedIds.push($(this).attr("id"));
+
+                })
+
+                $(".url").each(function (index) {
+                    insertedUrls.push($(this).val());
+                })
+
+
+                formDataRepository.append("projectData[]", $(".projectName").val())
+                formDataRepository.append("projectData[]", $(".departmentOption option:selected").val())
+                formDataRepository.append("projectData[]", $(".user option:selected").val())
+                formDataRepository.append("projectData[]", $(".userName").val())
+
+
+                var repos = [];
+                var isDistinct = true;
+
+                for (var i = 0; i < insertedUrls.length; i++) {
+                    formDataRepository.append("projectData[]", selectedIds[i] + "^" + insertedUrls[i]);
+                    repos.push(selectedIds[i] + "^" + insertedUrls[i]);
+                }
+
+                for (var i = 0; i < insertedUrls.length; i++) {
+                    for (var j = 0; j < insertedUrls.length; j++) {
+                        if (repos[i] == repos[j] && i != j)
+                            isDistinct = false;
+                    }
+                }
+
+                $("form").validate();
+
+
+                $('#Name').rules("add",
+                    {
+                        required: true,
+                        messages: {
+                            required: "Project name is required",
+                        }
+                    });
+                $('#Username').rules("add",
+                    {
+                        required: true,
+                        messages: {
+                            required: "User name is required",
+                        }
+                    });
+
+                var filledUrls = true;
+
+                for (var i = 0; i <= repoCount; i++) {
+                    var rep = $('input[name="name' + i + '"]');
+                    if (rep.val() == "") {
+                        filledUrls = false;
+                        $("#id" + i).text("Insert URL");
+                    }
+                }
+
+                if (!isDistinct) {
+                    $('.error_Row').empty().append('<span>You have 2 or more similar repositories</span>');
+                }
+
+
+
+
+                var projectData = [];
+                projectData.push($(".projectName").val())
+                projectData.push($(".departmentOption option:selected").val())
+                projectData.push($(".user option:selected").val())
+                projectData.push($(".userName").val())
+                for (var i = 0; i < insertedUrls.length; i++) {
+                    projectData.push(selectedIds[i] + "^" + insertedUrls[i]);
+                }
+
+                var testData = {
+                    projectData: projectData
+                };
+                var projectName = $(".projectName").val();
+
+                if ($("form").valid() && isDistinct && filledUrls) {
+                    $.ajax(
+                        {
+                            url: "/Project/IsProjectNameValid",
+                            type: "POST",
+                            dataType: 'JSON',
+                            data: {
+                                name: projectName,
+                            },
+                            success: function (response) {
+                                if (response == false) {
+                                    $.ajax(
+                                        {
+                                            url: "/Project/SubmitProject/",
+                                            data: testData,
+                                            type: "POST",
+                                            //contentType: 'application/json',
+                                            //dataType: "json",
+                                            success: function (data) {
+
+                                                document.location.href = "/Project/Index";
+
+
+                                            },
+
+                                        })
+                                }
+                                else {
+                                    $(".error_projectName").text("This name already exists");
+}
+                            },
+
+                        })
+                }
+
+            })
+
+        })
+
+
+        $(document).on('click', '#removeButton', function (event) {
+
+            $(this).closest(".repoClass").remove();
+            $('.error_Row').empty();
+            $('.error_projectName').empty();
+            repoCount--;
+        })
+
+    </script>
+}

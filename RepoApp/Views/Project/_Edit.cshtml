@@ -1,0 +1,312 @@
+﻿@model RepoApp.BLL.Models.ProjectViewModelEdit
+
+@{
+    ViewBag.Title = "null";
+
+}
+
+<h2 id="title"></h2>
+
+
+<form novalidate id="projectEditForm">
+    <hr />
+    <input type="hidden" asp-for="Id" />
+
+    <div class="row">
+        <div class="col-sm-6 form-group">
+            <label asp-for="Name" class="col-form-label"></label>
+            <input asp-for="Name" class="form-control projectName" />
+            <span asp-validation-for="Name" class="error_projectName"></span>
+        </div>
+        <div class="col-sm-6">
+            <label asp-for="DepartmentId" class="col-sm-6 col-form-label"></label>
+            <select asp-for="DepartmentId" asp-items="ViewBag.Departments"
+                    asp-data-style="btn-select"
+                    asp-data-size="10"
+                    asp-data-max-options="1"
+                    class="form-control form-control-sm selectpicker selectpicker-border show-tick departmentOption">
+            </select>
+            <span asp-validation-for="DepartmentId"></span>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-6">
+            <label asp-for="UserId" class="col-form-label"></label>
+            <select asp-for="UserId" asp-items="ViewBag.Users"
+                    asp-data-style="btn-select"
+                    asp-data-size="10"
+                    asp-data-max-options="1"
+                    class="form-control form-control-sm selectpicker selectpicker-border show-tick user">
+            </select>
+            <span asp-validation-for="UserId" ></span>
+        </div>
+        <div class="col-sm-6 form-group">
+            <label asp-for="Username" class="col-form-label"></label>
+            <input asp-for="Username" class="form-control userName" />
+            <span asp-validation-for="Username" class="error"></span>
+        </div>
+    </div>
+    <hr />
+</form>
+<div class="repoSpace"></div>
+
+<div class="row">
+    <div class="col text-center error_Row">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col text-center">
+        <button class="btn btn-success center" type="button" id="addRepo"><span class="glyphicon glyphicon-plus"></span>Add repository</button>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col text-center">
+        <button class="btn btn-primary center" type="button" id="editProject">Edit</button>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        $(document).ready(function () {
+            $("#title").text("Edit " + $(".projectName").val());
+
+
+            var id = $("#Id").val();
+            var lastRepoId;
+
+            $.ajax(
+                {
+                    url:"https://localhost:44379/project/GetAllUserRepositories/?id="+id,
+                    type: "Get",
+                    dataType: 'JSON',
+                    //data: {
+                    //    Id: id,
+                    //},
+
+                    success: function (response) {
+                        $(".repoSpace").append(response);
+                        $('.selectpicker').selectpicker();
+                        lastRepoId = $('.spanClass').last().attr('id');
+                    },
+                })
+
+
+
+            $("#addRepo").click(function () {
+                var repoCount = $('.spanClass').last().attr('id');
+                $('.error_Row').empty();
+                $('.error_projectName').empty();
+                if (typeof repoCount == 'undefined')
+                    repoCount = -1;
+                repoCount++;
+
+
+                var count = [];
+                count.push(repoCount);
+                $.ajax(
+                    {
+                        //url: "@Url.Action("AddRepositoryForEdit", "Project", new { httproute = "ActionRoute" })",
+                        url: "https://localhost:44379/api/project/AddRepositoryForEdit/"+count,
+                       // data: JSON.stringify(count),
+                        type: "GET",
+                        contentType: 'application/json',
+                        dataType: "json",
+                        success: function (response) {
+                            $(".repoSpace").append(response);
+                            $('.selectpicker').selectpicker();
+                        },
+
+                    })
+            })
+
+            $("#editProject").click(function (e) {
+
+                var formDataRepository = new FormData();
+                var selectedIds = [];
+                var insertedUrls = [];
+
+                $(".repository-selectpicker option:selected").each(function (index) {
+                    selectedIds.push($(this).attr("id"));
+
+                })
+
+                $(".url").each(function (index) {
+                    insertedUrls.push($(this).val());
+                })
+                var logout = $("a[href$='Account/LogOut']").text();
+                var loggedUsername = logout.replace('Exit ', '');
+                formDataRepository.append("projectData[]", $("#Id").val())
+                formDataRepository.append("projectData[]", $(".projectName").val())
+                formDataRepository.append("projectData[]", $(".departmentOption option:selected").val())
+                formDataRepository.append("projectData[]", $(".user option:selected").val())
+                formDataRepository.append("projectData[]", $(".userName").val())
+
+
+                var repos = [];
+                var isDistinct = true;
+
+                for (var i = 0; i < insertedUrls.length; i++) {
+                    formDataRepository.append("projectData[]", selectedIds[i] + "^" + insertedUrls[i] + "^" + i);
+                    repos.push(selectedIds[i] + "^" + insertedUrls[i]);
+                }
+
+                for (var i = 0; i < insertedUrls.length; i++) {
+                    for (var j = 0; j < insertedUrls.length; j++) {
+                        if (repos[i] == repos[j] && i != j)
+                            isDistinct = false;
+                    }
+                }
+
+                $("form").validate();
+
+
+                $('#Name').rules("add",
+                    {
+                        required: true,
+                        messages: {
+                            required: "Project name is required",
+                        }
+                    });
+                $('#Username').rules("add",
+                    {
+                        required: true,
+                        messages: {
+                            required: "User name is required",
+                        }
+                    });
+
+                var filledUrls = true;
+
+                var repoCount = $('.spanClass').last().attr('id');
+
+                for (var i = 0; i <= repoCount; i++) {
+                    var rep = $('input[name="name' + i + '"]');
+                    if (rep.val() == "") {
+                        filledUrls = false;
+                        $("#" + i).text("Insert URL");
+                    }
+
+                }
+
+                if (!isDistinct) {
+                    $('.error_Row').empty().append('<span>You have 2 or more similar repositories</span>');
+                }
+
+
+                var projectData = [];
+                projectData.push($("#Id").val())
+                projectData.push($(".projectName").val())
+                projectData.push($(".departmentOption option:selected").val())
+                projectData.push($(".user option:selected").val())
+                projectData.push($(".userName").val())
+                for (var i = 0; i < insertedUrls.length; i++) {
+                    projectData.push(selectedIds[i] + "^" + insertedUrls[i]+"^"+i);
+                }
+
+                var dataForEdit = [$(".projectName").val(), $("#Id").val()];
+                //dataForEdit.push($("#Id").val())
+                //dataForEdit.push($(".projectName").val())
+
+                var testData = { dataForEdit: dataForEdit }
+                if ($("form").valid() && isDistinct && filledUrls) {
+                    $.ajax(
+                        {
+                            url: "/Project/IsProjectNameValidForEdit",
+                            type: "POST",
+                            dataType: 'JSON',
+                            data: testData,
+                            success: function (response) {
+                                if (response == false) {
+                    $.ajax(
+                        {
+                            url: "/Project/Edit/",
+                            type: "POST",
+                            data: formDataRepository,
+                            contentType: false,
+                            processData: false,
+                            success: function (data) {
+
+                                document.location.href = "/Project/Index";
+
+                            },
+
+                        })
+                                }
+                                else {
+                                    $(".error_projectName").text("This name already exists");
+                                }
+                            },
+
+                        })
+
+                }
+            })
+
+
+
+
+
+            $(document).on('click', '.remove', function (event) {
+
+
+                $('.error_Row').empty();
+                $('.error_projectName').empty();
+
+                var url = $('input[name="name' + $(this).attr('id') + '"]').val();
+                var id = $("#select" + $(this).attr('id')).val()
+                var info = new FormData();
+
+                info.append("info[]", url)
+                info.append("info[]", id)
+
+
+                var repoData = [url,id];
+
+                var lastIdOfEdit = lastRepoId;
+                var clickedButtonId = $(this).attr('id')
+
+                if (typeof lastIdOfEdit == 'undefined') {
+                    $(this).closest(".repoClass").remove();
+                    $('.error_Row').empty();
+                }
+                else {
+                    if (clickedButtonId > lastIdOfEdit) {
+
+                        $(this).closest(".repoClass").remove();
+                        $('.error_Row').empty();
+                    }
+                    else {
+                        $('.error_Row').empty();
+                        $(this).closest(".repoClass").remove();
+                        var testData = {
+                            repoData: repoData
+                        };
+                        $.ajax(
+                            {
+
+                                url: "/Project/DeleteRepository",
+                                type: "POST",
+                                data: testData,
+                                success: function (data) {
+
+                                },
+
+                            })
+
+                    }
+                }
+            })
+        })
+
+    </script>
+}
+
+
+
+
+
+

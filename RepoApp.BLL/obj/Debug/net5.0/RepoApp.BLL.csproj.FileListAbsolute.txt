@@ -1,0 +1,17 @@
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\bin\Debug\net5.0\RepoApp.BLL.deps.json
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\bin\Debug\net5.0\RepoApp.BLL.dll
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\bin\Debug\net5.0\ref\RepoApp.BLL.dll
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\bin\Debug\net5.0\RepoApp.BLL.pdb
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\bin\Debug\net5.0\RepoApp.Common.dll
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\bin\Debug\net5.0\RepoApp.DAL.dll
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\bin\Debug\net5.0\RepoApp.Common.pdb
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\bin\Debug\net5.0\RepoApp.DAL.pdb
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\obj\Debug\net5.0\RepoApp.BLL.csproj.AssemblyReference.cache
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\obj\Debug\net5.0\RepoApp.BLL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\obj\Debug\net5.0\RepoApp.BLL.AssemblyInfoInputs.cache
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\obj\Debug\net5.0\RepoApp.BLL.AssemblyInfo.cs
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\obj\Debug\net5.0\RepoApp.BLL.csproj.CoreCompileInputs.cache
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\obj\Debug\net5.0\RepoApp.BLL.csproj.CopyComplete
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\obj\Debug\net5.0\RepoApp.BLL.dll
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\obj\Debug\net5.0\ref\RepoApp.BLL.dll
+C:\Users\crm0261\source\repos\NETCore\RepoApp\RepoApp.BLL\obj\Debug\net5.0\RepoApp.BLL.pdb
